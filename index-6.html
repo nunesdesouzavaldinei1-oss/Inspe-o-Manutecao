@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Inspeção+ | Manutenção Industrial</title>
+<style>
+:root{--bg:#061524;--side:#061a2d;--card:#0c2540;--line:#234667;--text:#f4f8fc;--muted:#9db3c8;--blue:#1683ff;--green:#10c978;--orange:#f39a19;--red:#f14c55;--purple:#7654f5}
+*{box-sizing:border-box}body{margin:0;background:#061524;color:var(--text);font-family:Arial,Helvetica,sans-serif}
+header{height:282px;padding:18px 18px 16px 228px;position:relative;overflow:hidden;background:linear-gradient(90deg,rgba(5,22,39,.98),rgba(7,25,43,.93) 28%,rgba(7,25,43,.25)),url("https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=1800&q=80") center/cover;border-bottom:1px solid #24445f}
+header:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 50%,rgba(5,19,32,.45));pointer-events:none}
+.brand{position:absolute;left:18px;top:15px;z-index:2;display:flex;align-items:center;gap:10px}.logo{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;color:#1788ff;font-size:30px}
+header h1{margin:0;font-size:26px}header small{color:#c0d0df}.hero{position:relative;z-index:2;margin-top:72px}.hero h2{font-size:34px;margin:0}.hero p{font-size:17px;margin:8px 0;color:#d1dfeb}.hero-meta{position:absolute;right:0;top:-62px;display:flex;gap:10px}.meta{background:#173653dd;border:1px solid #345775;border-radius:9px;padding:10px 14px;font-size:13px}
+nav{position:fixed;left:0;top:0;bottom:0;width:207px;display:flex;flex-direction:column;gap:5px;padding:102px 8px 14px;background:linear-gradient(180deg,#06192b,#071d32);border-right:1px solid #183751;z-index:20}
+nav button{border:1px solid transparent;background:transparent;color:#c2d2e0;text-align:left;padding:13px 14px;border-radius:9px;font-size:14px;font-weight:700;cursor:pointer}nav button:hover{background:#102d4a;color:white}nav button.active{background:linear-gradient(90deg,#096be0,#1057a8);color:#fff;border-color:#1586ff}
+main{margin-left:207px;padding:16px 18px 30px;background:#071a2d;min-height:calc(100vh - 282px)}.card{background:linear-gradient(145deg,#0d2945,#0a2037);border:1px solid #214664;border-radius:12px;padding:14px;margin-bottom:14px;box-shadow:0 7px 22px #0003}
+h2,h3{margin-top:0}.section-title{display:flex;align-items:center;justify-content:space-between}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(205px,1fr));gap:12px}
+label{display:block;font-size:12px;font-weight:bold;color:#b9ccdc}input,select,textarea{width:100%;margin-top:6px;padding:10px;background:#081a2c;color:#fff;border:1px solid #2b4c69;border-radius:8px}textarea{min-height:90px}
+.btn{border:0;border-radius:8px;padding:10px 14px;font-weight:800;cursor:pointer;margin:5px 3px 0 0}.primary{background:#1683ff;color:#fff}.muted{background:#1a3550;color:#dceaf5}.danger{background:#d83a45;color:#fff}.greenbtn{background:#0b9f5a;color:#fff}.shortcuts{display:grid;grid-template-columns:repeat(6,1fr);gap:11px}
+.shortcut{min-height:112px;border-radius:11px;padding:14px 8px;text-align:center;cursor:pointer;border:1px solid #ffffff18}.shortcut .ico{font-size:29px}.shortcut b{display:block;margin:8px 0 3px;font-size:15px}.shortcut span{font-size:11px;opacity:.9}
+.bluebg{background:linear-gradient(145deg,#147ff0,#0e59ad)}.greenbg{background:linear-gradient(145deg,#11c775,#087d4b)}.orangebg{background:linear-gradient(145deg,#f29a19,#aa6100)}.redbg{background:linear-gradient(145deg,#ee4852,#aa222d)}.purplebg{background:linear-gradient(145deg,#7756f4,#4a31a8)}.graybg{background:linear-gradient(145deg,#405a72,#293d51)}
+.kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:11px;margin-bottom:14px}.kpi{min-height:93px;border-radius:10px;padding:14px;background:#0d2843;border:1px solid #234766}.kpi small{color:#a8bdd0}.kpi .num{font-size:27px;font-weight:900;margin-top:7px}.blue .num{color:#3da0ff}.green .num{color:#20d887}.yellow .num{color:#ffc247}.red .num{color:#ff646d}
+.two{display:grid;grid-template-columns:1.65fr 1fr;gap:14px}.item{background:#091d32;border:1px solid #1f405e;border-radius:9px;padding:11px;margin:7px 0}.item b{font-size:13px}.item small{color:#94abc0}
+table{width:100%;border-collapse:collapse}th,td{padding:9px;border-bottom:1px solid #1e3b56;text-align:left;font-size:12px}th{color:#8da8bf;font-size:10px}td{color:#dce8f2}.badge{display:inline-block;padding:5px 10px;border-radius:20px;font-size:11px;font-weight:900}.normal{background:#0a9f5a;color:#dcffed}.atencao{background:#b27600;color:#fff1c7}.critico{background:#bd303b;color:#ffe0e2}
+.type-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}.type{cursor:pointer;min-height:150px;padding:12px;border-radius:10px;text-align:center;border:1px solid #2a4965;background:#0b2037}.type .big{font-size:35px}.type b{display:block;margin:7px 0 4px}.type small{color:#8fa8be;font-size:10px}
+.link{color:#3ea4ff;font-size:12px;font-weight:bold}.footer{color:#718ca4;text-align:center;padding:12px;font-size:11px}.hidden{display:none}
+#photoPreview img,.equip-photo{max-width:140px;max-height:100px;object-fit:cover;border-radius:8px;margin:5px}.equip-card{display:flex;gap:12px;align-items:flex-start}.equip-card .equip-photo{width:110px;height:85px}.profile{position:fixed;left:15px;bottom:15px;width:177px;z-index:21;text-align:center;color:#a9bed1;font-size:11px}.profile .avatar{margin:auto;width:52px;height:52px;border-radius:50%;background:#e9f3ff;color:#1a3955;display:grid;place-items:center;font-size:25px}.profile b{display:block;color:#fff;font-size:13px;margin-top:7px}.profile em{display:block;margin-top:14px;color:#9eb6cb}
+@media(max-width:1000px){nav{position:static;width:100%;height:auto;flex-direction:row;overflow:auto;padding:8px}main{margin-left:0}header{padding-left:18px}.profile{display:none}.shortcuts{grid-template-columns:repeat(3,1fr)}.kpis{grid-template-columns:repeat(2,1fr)}.two{grid-template-columns:1fr}.type-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:600px){header{height:235px}.hero h2{font-size:26px}.hero-meta{position:static;margin-top:18px;flex-wrap:wrap}.shortcuts{grid-template-columns:repeat(2,1fr)}.type-grid{grid-template-columns:repeat(2,1fr)}main{padding:10px}.kpis{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<header>
+<div class="brand"><div class="logo">⚙</div><div><h1>Inspeção+</h1><small>Manutenção Inteligente</small></div></div>
+<div class="hero"><h2>Bem-vindo, Valdinei!</h2><p>Manutenção hoje, produtividade sempre!</p><div class="hero-meta"><div class="meta">📅 <b id="today"></b></div><div class="meta">◷ <b id="clock"></b></div><div class="meta">🏭 <b>FFO</b><br><small>Manutenção Industrial</small></div></div></div>
+</header>
+<div class="profile"><div class="avatar">👷</div><b>Valdinei N. de Souza</b><span>Técnico Eletromecânico</span><em>Disciplina hoje,<br>menos paradas amanhã!</em></div>
+
+<nav id="nav">
+<button onclick="show('dashboard',this)" class="active">⌂ &nbsp; Início</button>
+<button onclick="show('equip',this)">⚙ &nbsp; Equipamentos</button>
+<button onclick="show('nova',this)">▣ &nbsp; Nova Inspeção</button>
+<button onclick="show('manut',this)">🔧 &nbsp; Manutenção da Semana</button>
+<button onclick="show('preventiva',this)">▦ &nbsp; Preventiva</button>
+<button onclick="show('hist',this)">◷ &nbsp; Histórico</button>
+<button onclick="show('anom',this)">⚠ &nbsp; Anomalias</button>
+</nav>
+
+<main>
+<section id="dashboard">
+<div class="card"><div class="shortcuts">
+<div class="shortcut bluebg" onclick="go('nova')"><div class="ico">⊕</div><b>Nova Inspeção</b><span>Inicie uma nova inspeção</span></div>
+<div class="shortcut greenbg" onclick="go('equip')"><div class="ico">⚙</div><b>Equipamentos</b><span>Cadastre e gerencie</span></div>
+<div class="shortcut orangebg" onclick="go('manut')"><div class="ico">🔧</div><b>Manutenção da Semana</b><span>Registre os serviços</span></div>
+<div class="shortcut redbg" onclick="go('anom')"><div class="ico">!</div><b>Anomalias</b><span>Acompanhe os problemas</span></div>
+<div class="shortcut purplebg" onclick="go('dashboard')"><div class="ico">▥</div><b>Dashboard</b><span>Visão geral</span></div>
+<div class="shortcut graybg" onclick="go('hist')"><div class="ico">▤</div><b>Histórico</b><span>Consulte registros</span></div>
+</div></div>
+<div class="kpis">
+<div class="kpi blue"><small>Total de Equipamentos</small><div class="num" id="sEquip">0</div></div>
+<div class="kpi blue"><small>Inspeções Realizadas</small><div class="num" id="sInsp">0</div></div>
+<div class="kpi green"><small>Equipamentos OK</small><div class="num" id="sOk">0</div></div>
+<div class="kpi yellow"><small>Em Atenção</small><div class="num" id="sAt">0</div></div>
+<div class="kpi red"><small>Críticos</small><div class="num" id="sCrit">0</div></div>
+</div>
+<div class="two">
+<div class="card"><div class="section-title"><h3>Últimas Inspeções</h3></div><div id="dashList"></div></div>
+<div><div class="card"><div class="section-title"><h3>Equipamentos Críticos</h3></div><div id="criticalList"></div></div>
+<div class="card"><div class="section-title"><h3>Próximas Preventivas</h3></div><div id="preventiveList"></div></div></div>
+</div>
+<div class="card"><div class="section-title"><h3>Tipos de Manutenção</h3></div><div class="type-grid">
+<div class="type" onclick="openArea('Mecânica')"><div class="big">⚙️</div><b>Mecânica</b><small>Preventivas e inspeções</small></div>
+<div class="type" onclick="openArea('Elétrica')"><div class="big">⚡</div><b>Elétrica</b><small>Preventivas e inspeções</small></div>
+<div class="type" onclick="openArea('Instrumentação')"><div class="big">◉</div><b>Instrumentação</b><small>Sensores e controle</small></div>
+<div class="type" onclick="openArea('Segurança')"><div class="big">🛑</div><b>Segurança</b><small>NR12 e proteções</small></div>
+<div class="type" onclick="openArea('Geral')"><div class="big">📋</div><b>Geral</b><small>Inspeção completa</small></div>
+</div></div>
+<div class="card"><h3>Como funciona</h3><p>Cadastre os equipamentos, faça inspeções e registre todas as manutenções executadas durante a semana. Nesta versão os dados ficam salvos neste celular.</p></div>
+<div class="footer">⚙ Inspeção+ v1.1 • Teste local • Manutenção Industrial FFO</div>
+</section>
+
+<section id="area" class="hidden"><div class="card"><div class="section-title"><h2 id="areaTitle">Área</h2><span class="link">Inspeção + Preventiva</span></div><p id="areaDesc">Escolha o que deseja executar.</p><div class="shortcuts">
+<div class="shortcut bluebg" onclick="openAreaInspection()"><div class="ico">🔍</div><b>Inspeção</b><span id="areaInspectionText"></span></div>
+<div class="shortcut orangebg" onclick="openAreaPreventive()"><div class="ico">🛠️</div><b>Manutenção Preventiva</b><span id="areaPreventiveText"></span></div>
+</div></div><div class="card"><h3>Registros da área</h3><div id="areaRecords"></div></div></section>
+
+<section id="equip" class="hidden">
+<div class="card"><h2>Cadastrar equipamento</h2><div class="grid">
+<label>Tag / Código<input id="eTag" placeholder="Ex.: MOT-001"></label>
+<label>Nome<input id="eNome" placeholder="Motor bomba 01"></label>
+<label>Tipo<select id="eTipo"><option>Motor elétrico</option><option>Bomba</option><option>Redutor</option><option>Transportador</option><option>Ventilador</option><option>Compressor</option><option>Painel elétrico</option><option>Inversor</option><option>Soft starter</option><option>Outro</option></select></label>
+<label>Setor<input id="eSetor" placeholder="Ex.: ETE / Produção"></label>
+<label>Localização<input id="eLoc" placeholder="Ex.: Sala elétrica 02 / Linha 1"></label>
+<label>Fabricante<input id="eFab"></label><label>Modelo<input id="eMod"></label><label>Potência<input id="ePot" placeholder="Ex.: 15 kW"></label><label>Tensão<input id="eTen" placeholder="Ex.: 380 V"></label><label>Corrente nominal<input id="eCorr" placeholder="Ex.: 28 A"></label><label>RPM<input id="eRpm"></label>
+<label>Foto do equipamento<input id="eFoto" type="file" accept="image/*" capture="environment" onchange="previewEquipFoto(event)"></label>
+</div><div id="equipPhotoPreview"></div>
+<button class="btn primary" onclick="addEquip()">💾 Salvar equipamento</button><button class="btn muted" onclick="clearEquipForm()">Limpar</button>
+</div>
+<div class="card"><h3>Equipamentos cadastrados</h3><div id="equipList"></div></div>
+</section>
+
+<section id="nova" class="hidden"><div class="card"><h2>Nova inspeção</h2><div class="grid">
+<label>Equipamento<select id="iEquip"></select></label><label>Técnico<input id="iTec" placeholder="Nome do técnico"></label><label>Tipo<select id="iTipo"><option>Completa</option><option>Mecânica</option><option>Elétrica</option><option>Instrumentação</option><option>Segurança</option></select></label>
+</div><h3>⚙️ Avaliação mecânica</h3><div class="grid">
+<label>Vibração<select id="vib"><option>Normal</option><option>Atenção</option><option>Crítico</option></select></label><label>Ruído<select id="ruido"><option>Normal</option><option>Atenção</option><option>Crítico</option></select></label><label>Temperatura mecânica (°C)<input id="tempM" type="number"></label><label>Lubrificação<select id="lub"><option>Normal</option><option>Atenção</option><option>Crítico</option><option>Não aplicável</option></select></label><label>Rolamentos<select id="rol"><option>Normal</option><option>Atenção</option><option>Crítico</option><option>Não aplicável</option></select></label><label>Correias/acoplamento<select id="cor"><option>Normal</option><option>Atenção</option><option>Crítico</option><option>Não aplicável</option></select></label>
+</div><h3>⚡ Avaliação elétrica</h3><div class="grid">
+<label>Tensão L1-L2 (V)<input id="t12" type="number"></label><label>Tensão L2-L3 (V)<input id="t23" type="number"></label><label>Tensão L3-L1 (V)<input id="t31" type="number"></label><label>Corrente L1 (A)<input id="c1" type="number" step="0.1"></label><label>Corrente L2 (A)<input id="c2" type="number" step="0.1"></label><label>Corrente L3 (A)<input id="c3" type="number" step="0.1"></label><label>Temperatura elétrica (°C)<input id="tempE" type="number"></label><label>Isolação<select id="isol"><option>Normal</option><option>Atenção</option><option>Crítico</option><option>Não medido</option></select></label><label>Aterramento<select id="aterr"><option>Normal</option><option>Atenção</option><option>Crítico</option><option>Não medido</option></select></label><label>Painel/conexões<select id="painel"><option>Normal</option><option>Atenção</option><option>Crítico</option></select></label>
+</div><h3>📝 Anomalias e observações</h3><textarea id="obs" placeholder="Descreva anomalias, medidas corretivas e recomendações..."></textarea><label style="margin-top:10px">Foto<input id="foto" type="file" accept="image/*" capture="environment" onchange="previewFoto(event)"></label><div id="photoPreview"></div>
+<button class="btn primary" onclick="saveInspection()">💾 Salvar inspeção</button><button class="btn muted" onclick="clearInspection()">Limpar</button></div></section>
+
+<section id="manut" class="hidden">
+<div class="card"><h2>🔧 Manutenção da Semana</h2><p>Registre o serviço realizado no equipamento, com problema, ação, peças, materiais e fotos.</p>
+<div class="grid">
+<label>Equipamento<select id="mEquip"></select></label>
+<label>Técnico responsável<input id="mTec" placeholder="Nome do técnico"></label>
+<label>Data<input id="mData" type="date"></label>
+<label>Área<select id="mArea"><option>Mecânica</option><option>Elétrica</option><option>Instrumentação</option><option>Segurança</option><option>Geral</option></select></label>
+<label>Tipo de serviço<select id="mTipo"><option>Corretiva</option><option>Preventiva</option><option>Inspeção</option><option>Ajuste</option><option>Lubrificação</option><option>Elétrica</option><option>Mecânica</option><option>Instrumentação</option><option>Outro</option></select></label>
+<label>Status<select id="mStatus"><option>Concluída</option><option>Em execução</option><option>Pendente</option><option>Parada aguardando peça</option></select></label>
+</div>
+<label style="margin-top:12px">Problema encontrado<textarea id="mProblema" placeholder="O que foi encontrado?"></textarea></label>
+<label>Serviço executado<textarea id="mServico" placeholder="O que foi feito?"></textarea></label>
+<div class="grid"><label>Peças/materiais utilizados<textarea id="mPecas" placeholder="Ex.: rolamento 6205, correia A-42, cabo 2,5 mm²"></textarea></label><label>Observações / pendências<textarea id="mObs" placeholder="Recomendações ou pendências..."></textarea></label></div>
+<label>Foto do serviço<input id="mFoto" type="file" accept="image/*" capture="environment" onchange="previewManutFoto(event)"></label><div id="manutPhotoPreview"></div>
+<button class="btn primary" onclick="saveManut()">💾 Salvar manutenção</button><button class="btn muted" onclick="clearManut()">Limpar</button>
+</div>
+<div class="card"><div class="section-title"><h3>📅 Registros da semana</h3><span class="link" id="weekLabel"></span></div><div id="weekList"></div></div>
+</section>
+
+<section id="preventiva" class="hidden"><input type="hidden" id="pArea" value="Geral"><div class="card"><div class="section-title"><h2>Manutenção Preventiva</h2><span class="link">Área: <b id="pAreaLabel">Geral</b></span></div>
+<div class="grid"><label>Equipamento<select id="pEquip"></select></label><label>Periodicidade<select id="pFreq"><option>Diária</option><option>Semanal</option><option>Quinzenal</option><option>Mensal</option><option>Trimestral</option><option>Semestral</option><option>Anual</option></select></label><label>Próxima execução<input id="pData" type="date"></label><label>Responsável<input id="pResp" placeholder="Técnico responsável"></label><label>Horímetro<input id="pHora" placeholder="Ex.: 8.540 h"></label><label>Status<select id="pStatus"><option>Programada</option><option>Em execução</option><option>Concluída</option><option>Adiada</option></select></label></div>
+<label style="margin-top:12px">Atividades / checklist<textarea id="pServ" placeholder="Verificar rolamentos, lubrificar, reapertar conexões..."></textarea></label>
+<label>Observações / recomendações<textarea id="pObs"></textarea></label>
+<button class="btn primary" onclick="savePreventive()">💾 Salvar manutenção preventiva</button><button class="btn muted" onclick="clearPreventive()">Limpar</button></div>
+<div class="card"><h3>Histórico de preventivas</h3><div id="preventiveHistory"></div></div></section>
+
+<section id="hist" class="hidden"><div class="card"><h2>📋 Histórico geral</h2><div id="histList"></div></div></section>
+<section id="anom" class="hidden"><div class="card"><h2>⚠️ Anomalias</h2><div id="anomList"></div></div></section>
+</main>
+
+<script>
+const K1='inspecao_equip_v3',K2='inspecao_hist_v3',K3='inspecao_prev_v4',K4='inspecao_manut_v1';
+let equips=JSON.parse(localStorage.getItem(K1)||'[]'),hist=JSON.parse(localStorage.getItem(K2)||'[]'),prev=JSON.parse(localStorage.getItem(K3)||'[]'),manuts=JSON.parse(localStorage.getItem(K4)||'[]');
+let photoData='',equipPhotoData='',manutPhotoData='',currentArea='Geral';
+
+function save(){localStorage.setItem(K1,JSON.stringify(equips));localStorage.setItem(K2,JSON.stringify(hist));localStorage.setItem(K3,JSON.stringify(prev));localStorage.setItem(K4,JSON.stringify(manuts));render()}
+function go(id){const b=[...document.querySelectorAll('#nav button')].find(x=>x.getAttribute('onclick')?.includes("'"+id+"'"));show(id,b)}
+function show(id,btn){document.querySelectorAll('main>section').forEach(x=>x.classList.add('hidden'));document.getElementById(id).classList.remove('hidden');document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));if(btn)btn.classList.add('active');render()}
+function updateClock(){const d=new Date();today.textContent=d.toLocaleDateString('pt-BR',{weekday:'long',day:'2-digit',month:'2-digit',year:'numeric'});clock.textContent=d.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})}
+setInterval(updateClock,1000);updateClock();
+
+function previewEquipFoto(ev){const f=ev.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{equipPhotoData=r.result;equipPhotoPreview.innerHTML='<img class="equip-photo" src="'+equipPhotoData+'">'};r.readAsDataURL(f)}
+function previewFoto(ev){const f=ev.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{photoData=r.result;photoPreview.innerHTML='<img src="'+photoData+'">'};r.readAsDataURL(f)}
+function previewManutFoto(ev){const f=ev.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{manutPhotoData=r.result;manutPhotoPreview.innerHTML='<img src="'+manutPhotoData+'">'};r.readAsDataURL(f)}
+
+function clearEquipForm(){['eTag','eNome','eSetor','eLoc','eFab','eMod','ePot','eTen','eCorr','eRpm'].forEach(id=>document.getElementById(id).value='');document.getElementById('eFoto').value='';equipPhotoData='';equipPhotoPreview.innerHTML=''}
+function addEquip(){
+ const e={id:Date.now(),tag:eTag.value.trim(),nome:eNome.value.trim(),tipo:eTipo.value,setor:eSetor.value.trim(),local:eLoc.value.trim(),fab:eFab.value.trim(),mod:eMod.value.trim(),pot:ePot.value.trim(),ten:eTen.value.trim(),corr:eCorr.value.trim(),rpm:eRpm.value.trim(),photo:equipPhotoData};
+ if(!e.tag||!e.nome){alert('Informe pelo menos TAG e Nome.');return}
+ if(equips.some(x=>x.tag.toLowerCase()===e.tag.toLowerCase())){alert('Já existe um equipamento com essa TAG.');return}
+ equips.push(e);save();clearEquipForm();alert('Equipamento cadastrado com sucesso!');go('equip')
+}
+function editEquip(id){
+ const e=equips.find(x=>x.id===id);if(!e)return;
+ eTag.value=e.tag;eNome.value=e.nome;eTipo.value=e.tipo;eSetor.value=e.setor||'';eLoc.value=e.local||'';eFab.value=e.fab||'';eMod.value=e.mod||'';ePot.value=e.pot||'';eTen.value=e.ten||'';eCorr.value=e.corr||'';eRpm.value=e.rpm||'';equipPhotoData=e.photo||'';equipPhotoPreview.innerHTML=equipPhotoData?'<img class="equip-photo" src="'+equipPhotoData+'">':'';
+ const btn=document.querySelector('#equip .primary');btn.textContent='💾 Atualizar equipamento';btn.onclick=()=>{Object.assign(e,{tag:eTag.value.trim(),nome:eNome.value.trim(),tipo:eTipo.value,setor:eSetor.value.trim(),local:eLoc.value.trim(),fab:eFab.value.trim(),mod:eMod.value.trim(),pot:ePot.value.trim(),ten:eTen.value.trim(),corr:eCorr.value.trim(),rpm:eRpm.value.trim(),photo:equipPhotoData});save();clearEquipForm();btn.textContent='💾 Salvar equipamento';btn.onclick=addEquip;alert('Equipamento atualizado!')};
+ window.scrollTo(0,0)
+}
+function delEquip(id){if(confirm('Excluir equipamento?')){equips=equips.filter(e=>e.id!==id);save()}}
+
+function status(){let vals=[vib.value,ruido.value,lub.value,rol.value,cor.value,isol.value,aterr.value,painel.value];if(vals.includes('Crítico'))return'Crítico';if(vals.includes('Atenção'))return'Atenção';return'Normal'}
+function saveInspection(){
+ if(!iEquip.value){alert('Cadastre e selecione um equipamento.');return}const e=equips.find(x=>x.id==iEquip.value);if(!e)return;
+ const x={id:Date.now(),equipId:e.id,tag:e.tag,nome:e.nome,tipo:iTipo.value,tecnico:iTec.value.trim(),data:new Date().toLocaleString('pt-BR'),status:status(),obs:obs.value.trim(),photo:photoData,vib:vib.value,ruido:ruido.value,tempM:tempM.value,lub:lub.value,rol:rol.value,cor:cor.value,t12:t12.value,t23:t23.value,t31:t31.value,c1:c1.value,c2:c2.value,c3:c3.value,tempE:tempE.value,isol:isol.value,aterr:aterr.value,painel:painel.value};
+ hist.push(x);save();clearInspection();alert('Inspeção salva com sucesso!')
+}
+function clearInspection(){document.querySelectorAll('#nova input[type=number],#nova textarea').forEach(x=>x.value='');iTec.value='';foto.value='';photoData='';photoPreview.innerHTML=''}
+function view(id){const x=hist.find(a=>a.id===id);if(!x)return;alert(`INSPEÇÃO\n\n${x.tag} — ${x.nome}\nStatus: ${x.status}\nData: ${x.data}\nTipo: ${x.tipo}\nTécnico: ${x.tecnico||'-'}\n\nMecânica: vibração ${x.vib}, ruído ${x.ruido}, temperatura ${x.tempM||'-'}°C\n\nElétrica: correntes ${x.c1||'-'} / ${x.c2||'-'} / ${x.c3||'-'} A\nTensões ${x.t12||'-'} / ${x.t23||'-'} / ${x.t31||'-'} V\n\nObservações: ${x.obs||'-'}`)}
+
+function saveManut(){
+ if(!mEquip.value){alert('Cadastre e selecione um equipamento.');return}
+ const e=equips.find(x=>x.id==mEquip.value);if(!e)return;
+ const r={id:Date.now(),equipId:e.id,tag:e.tag,nome:e.nome,tecnico:mTec.value.trim(),data:mData.value||new Date().toISOString().slice(0,10),area:mArea.value,tipo:mTipo.value,status:mStatus.value,problema:mProblema.value.trim(),servico:mServico.value.trim(),pecas:mPecas.value.trim(),obs:mObs.value.trim(),photo:manutPhotoData,criadoEm:new Date().toLocaleString('pt-BR')};
+ if(!r.tecnico||!r.servico){alert('Informe o técnico e o serviço executado.');return}
+ manuts.push(r);save();clearManut();alert('Manutenção registrada com sucesso!')
+}
+function clearManut(){['mTec','mProblema','mServico','mPecas','mObs'].forEach(id=>document.getElementById(id).value='');mData.value=new Date().toISOString().slice(0,10);mFoto.value='';manutPhotoData='';manutPhotoPreview.innerHTML=''}
+function startOfWeek(d){const x=new Date(d);const day=x.getDay();const diff=day===0?-6:1-day;x.setDate(x.getDate()+diff);x.setHours(0,0,0,0);return x}
+function weekKey(date){const x=startOfWeek(new Date(date));return x.toISOString().slice(0,10)}
+function renderWeek(){
+ const key=weekKey(new Date()), arr=manuts.filter(x=>weekKey(x.data)===key).reverse();
+ weekLabel.textContent='Semana iniciando em '+new Date(key+'T12:00:00').toLocaleDateString('pt-BR');
+ weekList.innerHTML=arr.length?arr.map(x=>`<div class="item"><b>🔧 ${x.tag} — ${x.nome}</b> <span class="badge ${x.status==='Concluída'?'normal':x.status==='Pendente'?'critico':'atencao'}">${x.status}</span><br><small>📅 ${new Date(x.data+'T12:00:00').toLocaleDateString('pt-BR')} • 👷 ${x.tecnico} • ${x.area} • ${x.tipo}</small>${x.problema?`<br><small><b>Problema:</b> ${x.problema}</small>`:''}${x.servico?`<br><small><b>Serviço:</b> ${x.servico}</small>`:''}${x.pecas?`<br><small><b>Peças/materiais:</b> ${x.pecas}</small>`:''}${x.obs?`<br><small><b>Obs.:</b> ${x.obs}</small>`:''}${x.photo?`<br><img src="${x.photo}" style="max-width:180px;max-height:120px;border-radius:8px;margin-top:8px">`:''}</div>`).join(''):'<small style="color:#91a9bf">Nenhuma manutenção registrada nesta semana.</small>'
+}
+
+function savePreventive(){if(!pEquip.value){alert('Cadastre um equipamento primeiro.');return}const e=equips.find(x=>x.id==pEquip.value);if(!e)return;prev.push({id:Date.now(),area:pArea.value||currentArea,tag:e.tag,nome:e.nome,data:pData.value||new Date().toISOString().slice(0,10),freq:pFreq.value,resp:pResp.value.trim(),hora:pHora.value.trim(),status:pStatus.value,serv:pServ.value.trim(),obs:pObs.value.trim()});save();clearPreventive();alert('Manutenção preventiva salva!')}
+function clearPreventive(){['pData','pResp','pHora','pServ','pObs'].forEach(id=>document.getElementById(id).value='');pArea.value=currentArea;pAreaLabel.textContent=currentArea}
+function renderPreventiveHistory(){preventiveHistory.innerHTML=prev.length?[...prev].reverse().map(x=>`<div class="item"><b>🧰 ${x.tag} — ${x.nome}</b> <span class="badge ${x.status==='Concluída'?'normal':x.status==='Adiada'?'critico':'atencao'}">${x.status}</span><br><small>📅 ${x.data} • ${x.freq} • 👷 ${x.resp||'Sem responsável'}</small><br>${x.serv?`<small><b>Atividades:</b> ${x.serv}</small>`:''}${x.obs?`<br><small><b>Obs.:</b> ${x.obs}</small>`:''}</div>`).join(''):'<small style="color:#91a9bf">Nenhuma preventiva registrada.</small>'}
+
+function openArea(area){currentArea=area;document.querySelectorAll('main>section').forEach(x=>x.classList.add('hidden'));areaSection=document.getElementById('area');areaSection.classList.remove('hidden');document.querySelectorAll('#nav button').forEach(x=>x.classList.remove('active'));areaTitle.textContent='🔧 '+area;areaDesc.textContent='Escolha entre Inspeção ou Manutenção Preventiva de '+area+'.';areaInspectionText.textContent='Abrir inspeção de '+area;areaPreventiveText.textContent='Programar preventiva de '+area;renderAreaRecords()}
+function openAreaInspection(){go('nova');if(['Mecânica','Elétrica','Instrumentação','Segurança'].includes(currentArea))iTipo.value=currentArea}
+function openAreaPreventive(){go('preventiva');pArea.value=currentArea;pAreaLabel.textContent=currentArea}
+function renderAreaRecords(){const box=areaRecords;if(!box)return;const ih=hist.filter(x=>x.tipo===currentArea||(currentArea==='Geral'&&(!x.tipo||x.tipo==='Completa')));const mv=manuts.filter(x=>x.area===currentArea);const pv=prev.filter(x=>(x.area||'Geral')===currentArea);box.innerHTML=ih.concat(mv,pv).length?[...ih.slice(-3).reverse(),...mv.slice(-3).reverse(),...pv.slice(-3).reverse()].map(x=>`<div class="item"><b>${x.tag} — ${x.nome}</b><br><small>${x.tecnico?'🔧 '+x.tipo+' • '+x.data:'🛠️ '+(x.area||'Geral')+' • '+x.status}</small></div>`).join(''):'<small style="color:#91a9bf">Nenhum registro nesta área.</small>'}
+
+function render(){
+ sEquip.textContent=equips.length;sInsp.textContent=hist.length;sOk.textContent=hist.filter(x=>x.status==='Normal').length;sAt.textContent=hist.filter(x=>x.status==='Atenção').length;sCrit.textContent=hist.filter(x=>x.status==='Crítico').length;
+ iEquip.innerHTML=equips.length?equips.map(e=>`<option value="${e.id}">${e.tag} — ${e.nome}</option>`).join(''):'<option value="">Cadastre um equipamento primeiro</option>';
+ mEquip.innerHTML=equips.length?equips.map(e=>`<option value="${e.id}">${e.tag} — ${e.nome}</option>`).join(''):'<option value="">Cadastre um equipamento primeiro</option>';
+ pEquip.innerHTML=equips.length?equips.map(e=>`<option value="${e.id}">${e.tag} — ${e.nome}</option>`).join(''):'<option value="">Cadastre um equipamento primeiro</option>';
+ equipList.innerHTML=equips.length?equips.map(e=>`<div class="item equip-card">${e.photo?`<img class="equip-photo" src="${e.photo}">`:'<div class="equip-photo" style="display:grid;place-items:center;background:#122d47">⚙️</div>'}<div style="flex:1"><b>${e.tag} — ${e.nome}</b> <span class="badge normal">${e.tipo}</span><br><small>🏭 Setor: ${e.setor||'-'} • 📍 ${e.local||'-'}</small><br><small>${e.fab||''} ${e.mod||''} • ${e.pot||''} • ${e.ten||''} • ${e.corr||''} • ${e.rpm||''}</small><br><button class="btn primary" onclick="editEquip(${e.id})">✏️ Editar</button><button class="btn danger" onclick="delEquip(${e.id})">🗑️ Excluir</button></div></div>`).join(''):'Nenhum equipamento cadastrado.';
+ histList.innerHTML=hist.length?[...hist].reverse().map(card).join(''):'Nenhuma inspeção realizada.';
+ dashList.innerHTML=hist.length?[...hist].slice(-5).reverse().map(card).join(''):'Nenhuma inspeção realizada.';
+ anomList.innerHTML=hist.filter(x=>x.status!=='Normal').length?[...hist].reverse().filter(x=>x.status!=='Normal').map(card).join(''):'Nenhuma anomalia registrada.';
+ criticalList.innerHTML=hist.filter(x=>x.status==='Crítico').slice(-4).reverse().map(x=>`<div class="item"><b>⚠ ${x.tag} — ${x.nome}</b><span class="badge critico">Crítico</span><br><small>${x.obs||'Verificar equipamento.'}</small></div>`).join('')||'<small style="color:#91a9bf">Nenhum equipamento crítico.</small>';
+ preventiveList.innerHTML=prev.length?[...prev].slice(-3).reverse().map(x=>`<div class="item"><b>▣ ${x.tag} — ${x.nome}</b><br><small>📅 ${x.data} • ${x.status} • ${x.freq}</small></div>`).join(''):'<small style="color:#91a9bf">Nenhuma preventiva programada.</small>';
+ renderWeek();renderPreventiveHistory();renderAreaRecords()
+}
+function card(x){const cls=x.status==='Normal'?'normal':x.status==='Atenção'?'atencao':'critico';return `<div class="item"><b>${x.tag} — ${x.nome}</b> <span class="badge ${cls}">${x.status}</span><br><small>${x.data} | ${x.tipo} | Técnico: ${x.tecnico||'-'}</small><br>${x.obs?'<b>Obs.:</b> '+x.obs+'<br>':''}<button class="btn muted" onclick="view(${x.id})">Detalhes</button></div>`}
+mData.value=new Date().toISOString().slice(0,10);render();
+</script>
+</body>
+</html>
