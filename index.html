@@ -219,6 +219,76 @@ function render(){
 }
 function card(x){const cls=x.status==='Normal'?'normal':x.status==='Atenção'?'atencao':'critico';return `<div class="item"><b>${x.tag} — ${x.nome}</b> <span class="badge ${cls}">${x.status}</span><br><small>${x.data} | ${x.tipo} | Técnico: ${x.tecnico||'-'}</small><br>${x.obs?'<b>Obs.:</b> '+x.obs+'<br>':''}<button class="btn muted" onclick="view(${x.id})">Detalhes</button></div>`}
 mData.value=new Date().toISOString().slice(0,10);render();
-</script>
+</script>function setupPhotoChoices(){
+  const cfg=[
+    ['eFoto','equipPhotoPreview','equip'],
+    ['foto','photoPreview','insp'],
+    ['mFoto','manutPhotoPreview','manut']
+  ];
+
+  cfg.forEach(c=>{
+    const old=document.getElementById(c[0]);
+    const box=document.getElementById(c[1]);
+    if(!old||!box)return;
+
+    old.style.display='none';
+    old.removeAttribute('capture');
+    old.removeAttribute('onchange');
+
+    const b=document.createElement('div');
+    b.style.cssText='display:flex;gap:8px;flex-wrap:wrap;margin-top:6px';
+
+    const cam=document.createElement('button');
+    cam.type='button';
+    cam.className='btn primary';
+    cam.textContent='📷 Tirar foto';
+
+    const gal=document.createElement('button');
+    gal.type='button';
+    gal.className='btn muted';
+    gal.textContent='🖼️ Escolher da galeria';
+
+    const ci=document.createElement('input');
+    ci.type='file';
+    ci.accept='image/*';
+    ci.capture='environment';
+    ci.style.display='none';
+
+    const gi=document.createElement('input');
+    gi.type='file';
+    gi.accept='image/*';
+    gi.style.display='none';
+
+    b.append(cam,gal,ci,gi);
+    old.parentElement.appendChild(b);
+
+    function carregar(f){
+      if(!f)return;
+      const r=new FileReader();
+      r.onload=()=>{
+        if(c[2]==='equip')equipPhotoData=r.result;
+        if(c[2]==='insp')photoData=r.result;
+        if(c[2]==='manut')manutPhotoData=r.result;
+        box.innerHTML='<img src="'+r.result+'" style="max-width:180px;max-height:120px;border-radius:8px"><br><button type="button" class="btn danger">🗑️ Remover</button>';
+        box.querySelector('button').onclick=()=>{
+          if(c[2]==='equip')equipPhotoData='';
+          if(c[2]==='insp')photoData='';
+          if(c[2]==='manut')manutPhotoData='';
+          box.innerHTML='';
+          ci.value='';
+          gi.value='';
+        };
+      };
+      r.readAsDataURL(f);
+    }
+
+    cam.onclick=()=>ci.click();
+    gal.onclick=()=>gi.click();
+    ci.onchange=()=>carregar(ci.files[0]);
+    gi.onchange=()=>carregar(gi.files[0]);
+  });
+}
+
+setupPhotoChoices();
 </body>
 </html>
