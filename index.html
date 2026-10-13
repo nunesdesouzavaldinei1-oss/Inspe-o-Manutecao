@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#061524">
+<link rel="manifest" href="./manifest.json">
 <title>Inspeção+ | Manutenção Industrial FFO</title>
 <style>
 :root{--bg:#061524;--side:#061a2d;--card:#0c2540;--line:#234667;--text:#f4f8fc;--muted:#9db3c8;--blue:#1683ff;--green:#10c978;--orange:#f39a19;--red:#f14c55;--purple:#7654f5}
@@ -314,6 +315,9 @@ function openArea(area){currentArea=area;$("areaTitle").textContent="🔧 "+area
 function renderAreaRecords(){const a=currentArea,arr=[...hist.filter(x=>x.tipo===a),...manuts.filter(x=>x.area===a),...prev.filter(x=>(x.area||"Geral")===a)].slice(-9).reverse();$("areaRecords").innerHTML=arr.length?arr.map(x=>`<div class="item"><b>${esc(x.tag)} — ${esc(x.nome)}</b><br><small>${esc(x.data||"")} • ${esc(x.tipo||x.area||"")}</small></div>`).join(""):"<small style='color:#91a9bf'>Nenhum registro nesta área.</small>"}
 
 $("mData").value=new Date().toISOString().slice(0,10);clearPreventive();updateInspectionFields();render();
+if ("serviceWorker" in navigator && location.protocol !== "file:") {
+  window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js").catch(console.warn));
+}
 </script>
 </body>
 </html>
