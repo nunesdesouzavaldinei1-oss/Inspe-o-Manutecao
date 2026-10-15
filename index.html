@@ -93,6 +93,7 @@ section#nova h3,section#equip h2,section#manut h2,section#preventiva h2{backgrou
 <button data-page="nova">▣ &nbsp;Nova Inspeção</button>
 <button data-page="manut">🔧 &nbsp;Manutenção da Semana</button>
 <button data-page="preventiva">▦ &nbsp;Preventiva</button>
+<button data-page="lubrificacao">🛢️ &nbsp;Lubrificação</button>
 <button data-page="hist">◷ &nbsp;Histórico</button>
 <button data-page="anom">⚠ &nbsp;Anomalias</button>
 </nav>
@@ -180,6 +181,28 @@ section#nova h3,section#equip h2,section#manut h2,section#preventiva h2{backgrou
 <button class="btn primary" id="prevSaveBtn">💾 Salvar manutenção preventiva</button><button class="btn muted" id="prevClearBtn">Limpar</button></div>
 <div class="card"><h3>Histórico de preventivas</h3><div id="preventiveHistory"></div></div></section>
 
+<section id="lubrificacao" class="hidden">
+<div class="card"><div class="section-title"><h2>🛢️ Plano de Lubrificação</h2><span class="badge normal">Por equipamento</span></div>
+<p style="color:var(--muted)">Cadastre cada ponto de lubrificação com sua própria frequência. A próxima data é calculada pela data da última execução e pelo intervalo configurado.</p>
+<div class="grid">
+<label>Equipamento<select id="lEquip"></select></label>
+<label>Ponto de lubrificação<input id="lPonto" placeholder="Ex.: mancal lado acoplamento"></label>
+<label>Área<select id="lArea"><option>Mecânica</option><option>Elétrica</option><option>Geral</option></select></label>
+<label>Tipo de lubrificante<select id="lTipo"><option>Graxa</option><option>Óleo</option><option>Outro</option></select></label>
+<label>Produto / especificação<input id="lProduto" placeholder="Ex.: graxa indicada pelo fabricante"></label>
+<label>Quantidade aplicada<input id="lQtd" placeholder="Ex.: 20 g ou 100 ml"></label>
+<label>Frequência<select id="lFreq"><option value="7">Semanal — 7 dias</option><option value="15">A cada 15 dias</option><option value="30">Mensal — 30 dias</option><option value="60">A cada 60 dias</option><option value="90">A cada 90 dias</option><option value="custom">Personalizada</option></select></label>
+<label id="lDiasWrap" class="hidden">Intervalo personalizado (dias)<input id="lDias" type="number" min="1" step="1" value="7"></label>
+<label>Última lubrificação<input id="lUltima" type="date"></label>
+<label>Responsável<input id="lResp" placeholder="Nome do responsável"></label>
+</div>
+<label>Observações<textarea id="lObs" placeholder="Condição encontrada, quantidade complementar, recomendação..."></textarea></label>
+<div class="item" id="lProximaBox"><b>📅 Próxima lubrificação:</b> <span id="lProxima">Preencha a última data e a frequência.</span><br><small id="lSituacao"></small></div>
+<button class="btn primary" id="lSaveBtn">💾 Salvar plano / registrar execução</button><button class="btn muted" id="lClearBtn">Limpar formulário</button>
+</div>
+<div class="card"><div class="section-title"><h3>📅 Planos e histórico de lubrificação</h3><span id="lCount" class="badge normal">0 registros</span></div><div id="lubList"></div></div>
+<div class="card"><h3>⚠️ Orientação de segurança</h3><p style="color:var(--muted)">Use o lubrificante, a quantidade e o intervalo definidos pelo fabricante e pelo plano de manutenção. Antes de lubrificar pontos próximos a partes móveis, aplique o procedimento de bloqueio e etiquetagem da empresa quando exigido.</p></div>
+</section>
 <section id="hist" class="hidden"><div class="card"><h2>📋 Histórico geral</h2><div id="histList"></div></div></section>
 <section id="anom" class="hidden"><div class="card"><h2>⚠️ Anomalias</h2><div id="anomList"></div></div></section>
 </main>
@@ -187,8 +210,8 @@ section#nova h3,section#equip h2,section#manut h2,section#preventiva h2{backgrou
 
 <script>
 "use strict";
-const K1="inspecao_equip_v3",K2="inspecao_hist_v3",K3="inspecao_prev_v4",K4="inspecao_manut_v1",K5="inspecao_tipos_v1";
-let equips=load(K1),hist=load(K2),prev=load(K3),manuts=load(K4),customEquipTypes=load(K5);
+const K1="inspecao_equip_v3",K2="inspecao_hist_v3",K3="inspecao_prev_v4",K4="inspecao_manut_v1",K5="inspecao_tipos_v1",K6="inspecao_lubrificacao_v1";
+let equips=load(K1),hist=load(K2),prev=load(K3),manuts=load(K4),customEquipTypes=load(K5),lubs=load(K6);
 let photoData="",equipPhotoData="",equipPhotoGallery=[],manutPhotoData="",currentArea="Geral",editingEquipId=null;
 
 function load(k){try{return JSON.parse(localStorage.getItem(k)||"[]")}catch(e){return[]}}
@@ -202,6 +225,7 @@ function persist(){
     localStorage.setItem(K3,JSON.stringify(prev));
     localStorage.setItem(K4,JSON.stringify(manuts));
     localStorage.setItem(K5,JSON.stringify(customEquipTypes));
+    localStorage.setItem(K6,JSON.stringify(lubs));
     const st=$("storageStatus"); if(st) st.textContent="✅ Salvamento local realizado: "+new Date().toLocaleString("pt-BR")+". Faça backup regularmente.";
     render();
   } catch(err) {
@@ -212,13 +236,13 @@ function persist(){
   }
 }
 function exportBackup(){
-  const data={app:"Inspeção+",version:2,exportadoEm:new Date().toISOString(),equipamentos:equips,inspecoes:hist,preventivas:prev,manutencoes:manuts,tiposPersonalizados:customEquipTypes};
+  const data={app:"Inspeção+",version:2,exportadoEm:new Date().toISOString(),equipamentos:equips,inspecoes:hist,preventivas:prev,manutencoes:manuts,tiposPersonalizados:customEquipTypes,lubrificacoes:lubs};
   const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
   const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="backup-inspecao-mais-"+new Date().toISOString().slice(0,10)+".json";a.click();setTimeout(()=>URL.revokeObjectURL(url),1500);toast("Backup exportado. Guarde o arquivo em local seguro.");
 }
 function importBackup(event){
   const file=event.target.files?.[0];if(!file)return;
-  const reader=new FileReader();reader.onload=()=>{try{const d=JSON.parse(reader.result);if(!d||!Array.isArray(d.equipamentos)||!Array.isArray(d.inspecoes))throw new Error("Formato inválido");if(!confirm("Restaurar este backup? Os registros atuais serão substituídos."))return;equips=d.equipamentos;hist=d.inspecoes;prev=Array.isArray(d.preventivas)?d.preventivas:[];manuts=Array.isArray(d.manutencoes)?d.manutencoes:[];customEquipTypes=Array.isArray(d.tiposPersonalizados)?d.tiposPersonalizados:[];persist();refreshTypes();toast("Backup restaurado!");}catch(err){alert("Não consegui restaurar esse arquivo. Selecione um backup JSON do Inspeção+.");}finally{event.target.value=""}};reader.readAsText(file);
+  const reader=new FileReader();reader.onload=()=>{try{const d=JSON.parse(reader.result);if(!d||!Array.isArray(d.equipamentos)||!Array.isArray(d.inspecoes))throw new Error("Formato inválido");if(!confirm("Restaurar este backup? Os registros atuais serão substituídos."))return;equips=d.equipamentos;hist=d.inspecoes;prev=Array.isArray(d.preventivas)?d.preventivas:[];manuts=Array.isArray(d.manutencoes)?d.manutencoes:[];customEquipTypes=Array.isArray(d.tiposPersonalizados)?d.tiposPersonalizados:[];lubs=Array.isArray(d.lubrificacoes)?d.lubrificacoes:[];persist();refreshTypes();toast("Backup restaurado!");}catch(err){alert("Não consegui restaurar esse arquivo. Selecione um backup JSON do Inspeção+.");}finally{event.target.value=""}};reader.readAsText(file);
 }
 function toast(t){$("toast").textContent=t;$("toast").style.display="block";clearTimeout(window.__t);window.__t=setTimeout(()=>$("toast").style.display="none",2200)}
 function show(id){document.querySelectorAll("main>section").forEach(s=>s.classList.add("hidden"));$(id).classList.remove("hidden");document.querySelectorAll("#nav button").forEach(b=>b.classList.toggle("active",b.dataset.page===id));render();scrollTo(0,0)}
@@ -346,10 +370,20 @@ $("prevSaveBtn").onclick=()=>{
 function clearPreventive(){$("pData").value=new Date().toISOString().slice(0,10);["pResp","pHora","pServ","pMateriais","pObs"].forEach(id=>$(id).value="");$("pArea").value=currentArea;$("pAreaLabel").textContent=currentArea}
 $("prevClearBtn").onclick=clearPreventive;
 
+function lInterval(){return $("lFreq").value==="custom"?Math.max(1,Number($("lDias").value)||1):Number($("lFreq").value)||7}
+function lNextDate(){const d=$("lUltima").value;if(!d)return null;const x=new Date(d+"T12:00:00");x.setDate(x.getDate()+lInterval());return x}
+function lUpdatePreview(){const n=lNextDate();$("lDiasWrap").classList.toggle("hidden",$("lFreq").value!=="custom");if(!n){$("lProxima").textContent="Preencha a última data e a frequência.";$("lSituacao").textContent="";return}const iso=n.getFullYear()+"-"+String(n.getMonth()+1).padStart(2,"0")+"-"+String(n.getDate()).padStart(2,"0");$("lProxima").textContent=n.toLocaleDateString("pt-BR");const today=new Date();today.setHours(0,0,0,0);n.setHours(0,0,0,0);$("lSituacao").textContent=n<today?"⚠️ Esta lubrificação já está vencida.":(n.getTime()-today.getTime()<=3*86400000?"🔔 Vence em breve.":"Programada.");$("lProximaBox").dataset.date=iso}
+["lFreq","lDias","lUltima"].forEach(id=>$(id).addEventListener("change",lUpdatePreview));
+$("lSaveBtn").onclick=()=>{const e=equips.find(x=>String(x.id)===$("lEquip").value);if(!e){alert("Cadastre e selecione um equipamento primeiro.");return}if(!val("lPonto")){alert("Informe o ponto de lubrificação, por exemplo: mancal lado acoplamento.");return}if(!val("lUltima")){alert("Informe a data da última lubrificação.");return}const next=lNextDate();const nextIso=next.getFullYear()+"-"+String(next.getMonth()+1).padStart(2,"0")+"-"+String(next.getDate()).padStart(2,"0");lubs.push({id:Date.now(),equipId:e.id,tag:e.tag,nome:e.nome,ponto:val("lPonto"),area:val("lArea"),tipo:val("lTipo"),produto:val("lProduto"),quantidade:val("lQtd"),intervalo:lInterval(),freq:$("lFreq").value==="custom"?"A cada "+lInterval()+" dias":$("lFreq").selectedOptions[0].textContent,ultima:val("lUltima"),proxima:nextIso,responsavel:val("lResp"),obs:val("lObs"),criadoEm:new Date().toISOString()});persist();clearLube();toast("Plano de lubrificação salvo!")};
+function clearLube(){["lPonto","lProduto","lQtd","lResp","lObs"].forEach(id=>$(id).value="");$("lFreq").value="7";$("lDias").value="7";$("lUltima").value=new Date().toISOString().slice(0,10);lUpdatePreview()}
+$("lClearBtn").onclick=clearLube;
+function lubeDone(id){const x=lubs.find(a=>a.id===id);if(!x)return;const d=new Date();const iso=d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");x.ultima=iso;const n=new Date(iso+"T12:00:00");n.setDate(n.getDate()+Number(x.intervalo||7));x.proxima=n.getFullYear()+"-"+String(n.getMonth()+1).padStart(2,"0")+"-"+String(n.getDate()).padStart(2,"0");x.execucoes=Number(x.execucoes||0)+1;persist();toast("Execução registrada; próxima data recalculada.")}
+function removeLube(id){if(!confirm("Excluir este registro de lubrificação?"))return;lubs=lubs.filter(x=>x.id!==id);persist();toast("Registro removido.")}
 function badge(s){return `<span class="badge ${s==="Normal"||s==="Concluída"?"normal":s==="Atenção"||s==="Em execução"?"atencao":"critico"}">${esc(s)}</span>`}
 function card(x){return `<div class="item"><b>${esc(x.tag)} — ${esc(x.nome)}</b> ${badge(x.status)}<br><small>${esc(x.data)} | ${esc(x.tipo)} | Técnico: ${esc(x.tecnico||"-")}</small>${x.obs?`<br><small><b>Obs.:</b> ${esc(x.obs)}</small>`:""}</div>`}
 function render(){
   $("sEquip").textContent=equips.length;$("sInsp").textContent=hist.length;$("sOk").textContent=hist.filter(x=>x.status==="Normal").length;$("sAt").textContent=hist.filter(x=>x.status==="Atenção").length;$("sCrit").textContent=hist.filter(x=>x.status==="Crítico").length;fillSelects();
+  const lsel=$("lEquip"), oldL=lsel.value;lsel.innerHTML=equips.map(e=>`<option value="${e.id}">${esc(e.tag)} — ${esc(e.nome)}</option>`).join("");if(equips.some(e=>String(e.id)===oldL))lsel.value=oldL;
   $("dashList").innerHTML=hist.length?[...hist].slice(-5).reverse().map(card).join(""):"<div class='item'>Nenhuma inspeção realizada.</div>";
   const cr=hist.filter(x=>x.status==="Crítico").slice(-4).reverse();$("criticalList").innerHTML=cr.length?cr.map(x=>`<div class="item"><b>⚠ ${esc(x.tag)} — ${esc(x.nome)}</b> ${badge("Crítico")}<br><small>${esc(x.obs||"Verificar equipamento.")}</small></div>`).join(""):"<small style='color:#91a9bf'>Nenhum equipamento crítico.</small>";
   $("preventiveList").innerHTML=prev.length?[...prev].slice(-3).reverse().map(x=>`<div class="item"><b>🧰 ${esc(x.tag)} — ${esc(x.nome)}</b><br><small>📅 ${esc(x.data)} • ${esc(x.status)} • ${esc(x.freq)}</small></div>`).join(""):"<small style='color:#91a9bf'>Nenhuma preventiva programada.</small>";
@@ -359,12 +393,15 @@ function render(){
   $("anomList").innerHTML=hist.filter(x=>x.status!=="Normal").length?[...hist].reverse().filter(x=>x.status!=="Normal").map(card).join(""):"<div class='item'>Nenhuma anomalia registrada.</div>";
   $("weekList").innerHTML=manuts.length?[...manuts].slice(-15).reverse().map(x=>`<div class="item"><b>🔧 ${esc(x.tag)} — ${esc(x.nome)}</b> ${badge(x.status)}<br><small>📅 ${esc(x.data)} • 👷 ${esc(x.tecnico)} • ${esc(x.area)} • ${esc(x.tipo)}</small>${x.problema?`<br><small><b>Problema:</b> ${esc(x.problema)}</small>`:""}${x.servico?`<br><small><b>Serviço:</b> ${esc(x.servico)}</small>`:""}${x.pecas?`<br><small><b>Peças:</b> ${esc(x.pecas)}</small>`:""}${x.photo?`<br><img src="${x.photo}" style="max-width:180px;max-height:120px;border-radius:8px;margin-top:8px">`:""}</div>`).join(""):"<div class='item'>Nenhuma manutenção registrada.</div>";
   $("preventiveHistory").innerHTML=prev.length?[...prev].reverse().map(x=>`<div class="item"><b>🧰 ${esc(x.tag)} — ${esc(x.nome)}</b> ${badge(x.status)}<br><small>📅 ${esc(x.data)} • ${esc(x.freq)} • 👷 ${esc(x.resp||"-")} • ⏱ ${esc(x.hora||"-")}</small>${x.serv?`<br><small><b>Atividades:</b> ${esc(x.serv)}</small>`:""}${x.materiais?`<br><small><b>Materiais:</b> ${esc(x.materiais)}</small>`:""}${x.obs?`<br><small><b>Obs.:</b> ${esc(x.obs)}</small>`:""}</div>`).join(""):"<div class='item'>Nenhuma preventiva registrada.</div>";
+  const sortedL=[...lubs].sort((a,b)=>(a.proxima||"").localeCompare(b.proxima||""));
+  $("lCount").textContent=lubs.length+" registros";
+  $("lubList").innerHTML=sortedL.length?sortedL.map(x=>{const d=new Date((x.proxima||"")+"T12:00:00"),today=new Date();today.setHours(0,0,0,0);const overdue=x.proxima&&d<today;const soon=x.proxima&&!overdue&&(d-today)<=3*86400000;const status=overdue?"VENCIDA":soon?"VENCE EM BREVE":"PROGRAMADA";return `<div class="item"><b>🛢️ ${esc(x.tag)} — ${esc(x.nome)}</b> <span class="badge ${overdue?"critico":soon?"atencao":"normal"}">${status}</span><br><small><b>Ponto:</b> ${esc(x.ponto)} • ${esc(x.area)} • ${esc(x.tipo)}</small><br><small><b>Produto:</b> ${esc(x.produto||"não informado")} • <b>Quantidade:</b> ${esc(x.quantidade||"não informada")}</small><br><small><b>Frequência:</b> ${esc(x.freq)} • <b>Última:</b> ${esc(x.ultima)} • <b>Próxima:</b> ${x.proxima?d.toLocaleDateString("pt-BR"):"-"}</small><br><small><b>Responsável:</b> ${esc(x.responsavel||"-")}${x.obs?" • "+esc(x.obs):""}</small><br><button class="btn muted" onclick="lubeDone(${x.id})">✔ Registrar execução hoje</button><button class="btn danger" onclick="removeLube(${x.id})">Excluir</button></div>`}).join(""):"<div class='item'>Nenhum plano de lubrificação cadastrado. Use o formulário acima para adicionar o primeiro ponto.</div>";
   renderAreaRecords();calc();
 }
 function openArea(area){currentArea=area;$("areaTitle").textContent="🔧 "+area;$("areaDesc").textContent="Escolha entre inspeção e manutenção preventiva de "+area+".";$("areaInspectionText").textContent="Abrir inspeção de "+area;$("areaPreventiveText").textContent="Programar preventiva de "+area;$("areaInspBtn").onclick=()=>{show("nova");if(area!=="Geral")$("iTipo").value=area;updateInspectionAreas()};$("areaPrevBtn").onclick=()=>show("preventiva");show("area")}
 function renderAreaRecords(){const a=currentArea,arr=[...hist.filter(x=>x.tipo===a),...manuts.filter(x=>x.area===a),...prev.filter(x=>(x.area||"Geral")===a)].slice(-9).reverse();$("areaRecords").innerHTML=arr.length?arr.map(x=>`<div class="item"><b>${esc(x.tag)} — ${esc(x.nome)}</b><br><small>${esc(x.data||"")} • ${esc(x.tipo||x.area||"")}</small></div>`).join(""):"<small style='color:#91a9bf'>Nenhum registro nesta área.</small>"}
 
-$("mData").value=new Date().toISOString().slice(0,10);clearPreventive();updateInspectionFields();render();
+$("mData").value=new Date().toISOString().slice(0,10);$("lUltima").value=new Date().toISOString().slice(0,10);clearPreventive();lUpdatePreview();updateInspectionFields();render();
 </script>
 <script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./service-worker.js").catch(()=>{}));}</script>
 </body>
