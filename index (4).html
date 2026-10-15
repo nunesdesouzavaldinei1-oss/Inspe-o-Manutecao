@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b2740"><link rel="manifest" href="manifest.json">
+<title>Inspeção+</title>
+<style>
+:root{--navy:#0b2740;--blue:#087bea;--green:#20a35a;--yellow:#f2b400;--red:#e34b4b;--bg:#eef2f5}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:Arial,sans-serif;color:#17212b}
+header{background:linear-gradient(135deg,#0b2740,#0c5fa8);color:#fff;padding:17px 16px 20px;position:sticky;top:0;z-index:10}
+.brand{display:flex;align-items:center;gap:10px}.gear{font-size:34px}.brand b{font-size:26px}.plus{color:#22a7ff}.tagline{font-size:11px;letter-spacing:2px;opacity:.9;margin-left:46px}
+main{max-width:760px;margin:auto;padding:14px 14px 80px}.screen{display:none}.screen.active{display:block}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.tiles{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.tile{border:0;border-radius:14px;padding:20px 12px;color:#fff;text-align:left;min-height:120px;box-shadow:0 4px 12px #0002}.tile b{display:block;font-size:16px;margin-top:10px}.tile small{opacity:.9}.blue{background:#087bea}.green{background:#20a35a}.dark{background:#174b70}.gray{background:#4c6374}
+.card{background:#fff;border-radius:14px;padding:15px;margin-bottom:13px;box-shadow:0 2px 8px #0001}.card h2{font-size:17px;margin:0 0 12px}
+label{font-size:12px;font-weight:700;display:block;margin:8px 0 5px}input,select,textarea{width:100%;padding:11px;border:1px solid #cbd4dc;border-radius:9px;background:#fff;font-size:14px}textarea{min-height:90px}
+.section{background:#087bea;color:#fff;padding:10px;border-radius:8px;font-weight:700;margin:13px 0 4px}.item{padding:12px 0;border-bottom:1px solid #e5e9ec}.item:last-child{border:0}.item p{margin:0 0 9px;font-weight:700;font-size:14px}.status{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.status label{margin:0}.status input{display:none}.status span{display:block;text-align:center;padding:9px 3px;border:1px solid #ccd3d9;border-radius:7px;background:#fff;font-size:12px}.status input:checked+span{background:#087bea;color:#fff;border-color:#087bea}
+button{border:0;border-radius:10px;padding:12px 14px;font-weight:700;font-size:14px}.primary{background:#087bea;color:#fff;width:100%}.back{background:#dce7ef;color:#16476a}.actions{display:grid;grid-template-columns:1fr 1fr;gap:9px}.photo{border:2px dashed #cbd5dd;border-radius:10px;padding:15px;text-align:center}.photo input{display:none}.thumb{width:82px;height:82px;object-fit:cover;border-radius:8px;margin:7px 5px 0 0}
+.nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #d5dce2;display:flex;justify-content:space-around;padding:8px 4px calc(8px + env(safe-area-inset-bottom));z-index:20}.nav button{background:none;color:#56636d;padding:5px;font-size:11px}.nav .add{background:#087bea;color:#fff;border-radius:50%;font-size:22px;width:48px;height:48px;margin-top:-22px}
+.metric{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #edf0f2;font-size:13px}.ok{color:var(--green);font-weight:700}.warn{color:#a56e00;font-weight:700}
+</style></head>
+<body>
+<header><div class="brand"><span class="gear">⚙️🔧</span><b>Inspeção<span class="plus">+</span></b></div><div class="tagline">MANUTENÇÃO EM AÇÃO</div></header>
+<main>
+<section id="home" class="screen active">
+<div class="card"><h2>Olá! 👋</h2><p style="margin:0;color:#63717c">Inspeções preventivas, evidências e histórico dos equipamentos em um só lugar.</p></div>
+<div class="tiles">
+<button class="tile blue" onclick="show('new')">📋<b>Nova inspeção</b><small>Iniciar checklist</small></button>
+<button class="tile green" onclick="show('qr')">▦<b>Ler QR Code</b><small>Acessar equipamento</small></button>
+<button class="tile dark" onclick="show('equip')">⚙️<b>Equipamentos</b><small>Cadastro e histórico</small></button>
+<button class="tile gray" onclick="show('reports')">📄<b>Relatórios</b><small>Inspeções salvas</small></button>
+</div>
+<div class="card" style="margin-top:13px"><h2>Resumo</h2><div class="metric"><span>Inspeções realizadas</span><b id="count">0</b></div><div class="metric"><span>Último equipamento</span><b id="last">—</b></div></div>
+</section>
+
+<section id="new" class="screen">
+<div class="card"><h2>Nova inspeção</h2>
+<div class="section">1. Identificação do equipamento</div>
+<label>Equipamento</label><input id="equip" value="Motor da Prensa 1500">
+<div class="grid2"><div><label>TAG</label><input id="tag" placeholder="PRE-1500"></div><div><label>Setor</label><input id="setor" placeholder="Setor"></div></div>
+<div class="grid2"><div><label>Data</label><input id="date" type="date"></div><div><label>Responsável</label><input id="resp" placeholder="Responsável"></div></div>
+<div class="section">2. Dados da placa</div>
+<div class="grid2">
+<div><label>Potência</label><input value="30 kW / 40 CV"></div><div><label>Tensão</label><input value="380/660 V"></div>
+<div><label>Corrente nominal</label><input value="59,3 / 34,1 A"></div><div><label>Fator de serviço</label><input value="1,25"></div>
+<div><label>Rotação</label><input value="1780 rpm"></div><div><label>Frequência</label><input value="60 Hz"></div>
+</div>
+</div>
+<div class="card"><div class="section">3. Checklist</div><div id="checklist"></div></div>
+<div class="card"><div class="section">4. Medições</div><div class="grid2">
+<div><label>Corrente L1 (A)</label><input id="l1" type="number" step=".1"></div><div><label>Corrente L2 (A)</label><input id="l2" type="number" step=".1"></div><div><label>Corrente L3 (A)</label><input id="l3" type="number" step=".1"></div><div><label>Temperatura (°C)</label><input id="temp" type="number" step=".1"></div>
+<div><label>L1-L2 (V)</label><input id="v12" type="number"></div><div><label>L2-L3 (V)</label><input id="v23" type="number"></div><div><label>L3-L1 (V)</label><input id="v31" type="number"></div><div><label>Proteção ajustada (A)</label><input id="prot" type="number" step=".1"></div>
+</div></div>
+<div class="card"><div class="section">5. Fotos e observações</div><div class="photo">📷 <label for="photos" style="display:inline;cursor:pointer">Adicionar fotos</label><input id="photos" type="file" accept="image/*" multiple capture="environment"><div id="previews"></div></div>
+<label>Observações / ação recomendada</label><textarea id="obs"></textarea></div>
+<div class="card"><div class="section">6. Resultado</div><div class="status">
+<label><input type="radio" name="final" value="OK"><span>🟢 OK</span></label><label><input type="radio" name="final" value="ATENÇÃO"><span>🟡 Atenção</span></label><label><input type="radio" name="final" value="CRÍTICO"><span>🔴 Crítico</span></label>
+</div><button class="primary" style="margin-top:12px" onclick="saveInspection()">✓ Finalizar e salvar</button></div>
+<button class="back" onclick="show('home')">← Voltar</button>
+</section>
+
+<section id="qr" class="screen"><div class="card"><h2>▦ Acesso por QR Code</h2><p>Na versão completa, cada equipamento terá seu QR Code. Ao escanear, o aplicativo abre diretamente a ficha daquele equipamento.</p><div style="font-size:100px;text-align:center">▦</div><button class="primary" onclick="show('new')">Abrir exemplo — Prensa 1500</button></div></section>
+<section id="equip" class="screen"><div class="card"><h2>⚙️ Equipamentos</h2><p><b>PRE-1500</b> — Motor da Prensa 1500</p><p><b>Dados:</b> WEG W22 Super Premium · 30 kW · 40 CV · 380/660 V · 59,3/34,1 A</p><button class="primary" onclick="show('new')">Inspecionar este equipamento</button></div></section>
+<section id="reports" class="screen"><div class="card"><h2>📄 Relatórios</h2><div id="report"></div></div></section>
+</main>
+<div class="nav"><button onclick="show('home')">⌂<br>Início</button><button onclick="show('equip')">⚙<br>Equipamentos</button><button class="add" onclick="show('new')">+</button><button onclick="show('reports')">▤<br>Relatórios</button><button onclick="show('home')">👤<br>Perfil</button></div>
+<script>
+const items=[
+["Verificar estado geral e conservação do motor.","Visual, limpeza, corrosão e danos."],["Verificar fixação do motor e da base.","Parafusos, base, chumbadores e folgas."],["Verificar ruídos e vibrações.","Observar motor e mancais durante operação."],["Verificar temperatura do motor.","Medir e comparar com a condição normal."],["Verificar ventilação e refrigeração.","Ventilador, entradas de ar e sujeira."],["Realizar medição da corrente elétrica.","Comparar com 59,3 A em 380 V e FS 1,25."],["Verificar equilíbrio entre as fases.","Comparar L1, L2 e L3."],["Verificar tensão de alimentação.","Medir L1-L2, L2-L3 e L3-L1."],["Verificar cabos, bornes e caixa de ligação.","Aperto, aquecimento, oxidação e isolação."],["Verificar aterramento.","Integridade e fixação do condutor de proteção."],["Verificar acoplamento motor/prensa.","Desgaste, folgas e alinhamento."],["Verificar rolamentos/mancais.","Ruído, vibração e temperatura."],["Verificar sinais de sobrecarga.","Corrente medida x placa e condição da prensa."],["Verificar dispositivo de proteção.","Tipo, ajuste e compatibilidade com o motor."]
+];
+document.getElementById('checklist').innerHTML=items.map((x,i)=>`<div class="item"><p>${i+1}. ${x[0]}</p><small>${x[1]}</small><div class="status" style="margin-top:8px"><label><input name="c${i}" type="radio" value="OK"><span>OK</span></label><label><input name="c${i}" type="radio" value="ATENÇÃO"><span>Atenção</span></label><label><input name="c${i}" type="radio" value="CRÍTICO"><span>Crítico</span></label></div><input placeholder="Observação do item"></div>`).join('');
+date.valueAsDate=new Date();
+photos.onchange=e=>{previews.innerHTML='';[...e.target.files].forEach(f=>{let im=document.createElement('img');im.className='thumb';im.src=URL.createObjectURL(f);previews.appendChild(im)})};
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');if(id==='reports')loadReports();scrollTo(0,0)}
+function saveInspection(){let data={equip:equip.value,tag:tag.value,date:date.value,resp:resp.value,l1:l1.value,l2:l2.value,l3:l3.value,temp:temp.value,obs:obs.value,final:document.querySelector('input[name="final"]:checked')?.value||'NÃO INFORMADO'};let arr=JSON.parse(localStorage.getItem('inspecoes')||'[]');arr.push(data);localStorage.setItem('inspecoes',JSON.stringify(arr));alert('Inspeção salva com sucesso!');show('home');count.textContent=arr.length;last.textContent=data.equip}
+function loadReports(){let arr=JSON.parse(localStorage.getItem('inspecoes')||'[]');report.innerHTML=arr.length?arr.slice().reverse().map(x=>`<div class="item"><b>${x.equip}</b><br><small>${x.date||''} · ${x.tag||''}</small><br><span class="${x.final==='OK'?'ok':'warn'}">${x.final}</span><br>Correntes: ${x.l1||'—'} / ${x.l2||'—'} / ${x.l3||'—'} A</div>`).join(''):'Nenhuma inspeção salva ainda.'}
+let a=JSON.parse(localStorage.getItem('inspecoes')||'[]');count.textContent=a.length;if(a.length)last.textContent=a[a.length-1].equip;
+</script></body></html>
