@@ -4,7 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#061524">
-<link rel="manifest" href="./manifest.json">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
 <title>Inspeção+ | Manutenção Industrial FFO</title>
 <style>
 :root{--bg:#061524;--side:#061a2d;--card:#0c2540;--line:#234667;--text:#f4f8fc;--muted:#9db3c8;--blue:#1683ff;--green:#10c978;--orange:#f39a19;--red:#f14c55;--purple:#7654f5}
@@ -33,11 +34,40 @@ label{display:block;font-size:12px;font-weight:bold;color:#b9ccdc}input,select,t
 .link{color:#3ea4ff;font-size:12px;font-weight:bold}.footer{color:#718ca4;text-align:center;padding:12px;font-size:11px}.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);z-index:200;background:#10304d;border:1px solid #3d6685;padding:12px 18px;border-radius:10px;display:none;box-shadow:0 10px 30px #0008}
 @media(max-width:1000px){.shortcuts{grid-template-columns:repeat(3,1fr)}.kpis{grid-template-columns:repeat(2,1fr)}.two{grid-template-columns:1fr}.type-grid{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:600px){header{min-height:235px}.hero h2{font-size:26px}.shortcuts{grid-template-columns:repeat(2,1fr)}.type-grid{grid-template-columns:repeat(2,1fr)}main{padding:10px}.kpis{grid-template-columns:1fr 1fr}.ficha-grid,.ficha-actions{grid-template-columns:1fr}.equip-gallery{grid-template-columns:repeat(3,minmax(0,1fr))}.equip-gallery img{height:80px}}
+
+/* Visual mobile inspirado na referência enviada */
+:root{--bg:#edf2f6;--side:#ffffff;--card:#ffffff;--line:#d8e0e7;--text:#1d2730;--muted:#65727e;--blue:#0879e8;--green:#10a76b;--orange:#ed9418;--red:#e3434d;--purple:#7654f5}
+body{background:#edf2f6;color:#1d2730;font-family:Roboto,Arial,Helvetica,sans-serif}
+header{min-height:150px;padding:22px 24px;background:linear-gradient(115deg,#06375b,#0878c8);border:0}
+.brand{gap:14px}.logo{width:58px;height:58px;background:transparent;color:#a9d7f4;font-size:43px}.brand h1{font-size:30px;color:white}.brand small{font-size:12px;letter-spacing:3px;color:#d6eafa;text-transform:uppercase}
+.hero{display:none}
+nav{position:fixed;top:auto;bottom:0;left:0;right:0;z-index:50;display:flex;justify-content:space-around;gap:0;overflow-x:auto;padding:7px 3px calc(7px + env(safe-area-inset-bottom));background:#fff;border-top:1px solid #d7dfe6;border-bottom:0;box-shadow:0 -4px 16px #10203012}
+nav button{flex:1;min-width:70px;white-space:normal;color:#58636e;padding:7px 3px;border-radius:8px;font-size:11px;line-height:1.25}
+nav button.active{background:#edf6ff;color:#0879e8;border-color:transparent}
+main{background:transparent;min-height:calc(100vh - 150px);padding:16px 14px calc(100px + env(safe-area-inset-bottom));max-width:900px}
+.card{background:#fff;border:0;border-radius:20px;padding:18px;margin-bottom:16px;box-shadow:0 4px 18px #182d3c12;color:#1d2730}
+label{font-size:14px;font-weight:500;color:#394650}input,select,textarea{background:#fff;color:#17212b;border:1px solid #cbd4dc;border-radius:13px;padding:14px 13px;font-size:15px;margin-top:8px}
+input:focus,select:focus,textarea:focus{outline:2px solid #b9dcff;border-color:#1683ff}
+.btn{border-radius:12px;padding:12px 16px}.primary{background:#0879e8}
+.item,.kpi,.type{background:#f7f9fb;color:#1d2730;border:1px solid #e0e6eb;border-radius:14px}.item small,.kpi small,.type small{color:#687783}
+h2,h3{color:#1d2730}
+section#nova h3,section#equip h2,section#manut h2,section#preventiva h2{background:#0879e8;color:#fff;border-radius:12px;padding:13px 15px;font-size:19px;margin:16px 0}
+section#nova .grid{gap:15px}
+.shortcuts{grid-template-columns:repeat(2,minmax(0,1fr))}.shortcut{border-radius:15px;min-height:108px}
+.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.kpi .num{color:#0879e8}
+.type-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.footer{color:#687783}
+@media(min-width:700px){nav{position:sticky;top:0;bottom:auto;justify-content:flex-start;background:#fff}main{padding-bottom:35px}.shortcuts{grid-template-columns:repeat(3,minmax(0,1fr))}.type-grid{grid-template-columns:repeat(5,minmax(0,1fr))}}
+
+
+/* Mostrar apenas o checklist da área escolhida */
+#mechanicalFields, #electricalFields { transition: opacity .15s ease; }
+#mechanicalFields.area-hidden, #electricalFields.area-hidden { display:none !important; }
 </style>
 </head>
 <body>
 <header>
-<div class="brand"><div class="logo">⚙</div><div><h1>Inspeção+</h1><small>Manutenção Inteligente</small></div></div>
+<div class="brand"><div class="logo">⚙️🔧</div><div><h1>Inspeção+</h1><small>Manutenção em ação</small></div></div>
 <div class="hero"><h2>Bem-vindo, Valdinei!</h2><p>Manutenção hoje, produtividade sempre!</p><div class="hero-meta"><div class="meta">📅 <b id="today"></b></div><div class="meta">◷ <b id="clock"></b></div><div class="meta">🏭 <b>FFO</b><br><small>Manutenção Industrial</small></div></div></div>
 </header>
 
@@ -78,7 +108,7 @@ label{display:block;font-size:12px;font-weight:bold;color:#b9ccdc}input,select,t
 </div></div>
 <div class="card"><h3>💾 Segurança dos dados</h3><p id="storageStatus">Os dados são salvos neste navegador. Faça uma cópia de segurança regularmente.</p><button class="btn primary" onclick="exportBackup()">⬇️ Fazer backup</button><button class="btn muted" onclick="document.getElementById('backupFile').click()">⬆️ Restaurar backup</button><input id="backupFile" type="file" accept="application/json,.json" style="display:none" onchange="importBackup(event)"><small style="display:block;color:#9db3c8;margin-top:8px">Guarde o arquivo de backup fora do celular. Restaurar um backup substitui os registros atuais.</small></div>
 <div class="card"><h3>Como funciona</h3><p>Cadastre equipamentos, faça inspeções, registre manutenções e programe preventivas. As informações ficam salvas neste navegador; para usar como aplicativo instalado e sincronizar entre aparelhos, será necessário publicar a versão online.</p></div>
-<div class="footer">⚙ Inspeção+ v2.2 • Inspeções Mecânica/Elétrica corrigidas • FFO</div>
+<div class="footer">⚙ Inspeção+ v2.2 • PWA • Manutenção Industrial FFO</div>
 </section>
 
 <section id="area" class="hidden"><div class="card"><div class="section-title"><h2 id="areaTitle">Área</h2><span class="link">Inspeção + Preventiva</span></div><p id="areaDesc"></p><div class="shortcuts">
@@ -108,6 +138,7 @@ label{display:block;font-size:12px;font-weight:bold;color:#b9ccdc}input,select,t
 <label>Vibração<select id="vib"><option>Normal</option><option>Atenção</option><option>Crítico</option></select></label><label>Ruído<select id="ruido"><option>Normal</option><option>Atenção</option><option>Crítico</option></select></label><label>Temperatura mecânica (°C)<input id="tempM" type="number"></label><label>Lubrificação<select id="lub"><option>Normal</option><option>Atenção</option><option>Crítico</option><option>Não aplicável</option></select></label><label>Rolamentos<select id="rol"><option>Normal</option><option>Atenção</option><option>Crítico</option><option>Não aplicável</option></select></label><label>Correias/acoplamento<select id="cor"><option>Normal</option><option>Atenção</option><option>Crítico</option><option>Não aplicável</option></select></label>
 </div></div>
 <div id="electricalFields"><h3>⚡ Avaliação elétrica</h3><div class="grid">
+<label>Vibração do conjunto/motor<select id="vibE"><option>Normal</option><option>Atenção</option><option>Crítico</option><option>Não avaliado</option></select></label><label>Ruído do conjunto/motor<select id="ruidoE"><option>Normal</option><option>Atenção</option><option>Crítico</option><option>Não avaliado</option></select></label>
 <label>Tensão L1-L2 (V)<input id="t12" type="number"></label><label>Tensão L2-L3 (V)<input id="t23" type="number"></label><label>Tensão L3-L1 (V)<input id="t31" type="number"></label>
 <label>Corrente L1 (A)<input id="c1" type="number" step=".1"></label><label>Corrente L2 (A)<input id="c2" type="number" step=".1"></label><label>Corrente L3 (A)<input id="c3" type="number" step=".1"></label>
 <label>Temperatura elétrica (°C)<input id="tempE" type="number"></label><label>Isolação<select id="isol"><option>Normal</option><option>Atenção</option><option>Crítico</option><option>Não medido</option></select></label><label>Aterramento<select id="aterr"><option>Normal</option><option>Atenção</option><option>Crítico</option><option>Não medido</option></select></label><label>Painel/conexões<select id="painel"><option>Normal</option><option>Atenção</option><option>Crítico</option></select></label>
@@ -253,27 +284,30 @@ function calc(){
   return {media,max,lim,pn,pf,imb};
 }
 ["iEquip","c1","c2","c3"].forEach(id=>$(id).addEventListener("input",calc));
-function updateInspectionFields(){
-  const type = $("iTipo").value;
-  $("mechanicalFields").classList.toggle("hidden", type === "Elétrica");
-  $("electricalFields").classList.toggle("hidden", type === "Mecânica");
-}
-$("iTipo").addEventListener("change", updateInspectionFields);
 
+function updateInspectionAreas(){
+  const type = $("iTipo").value;
+  const mechanical = type === "Completa" || type === "Mecânica";
+  const electrical = type === "Completa" || type === "Elétrica";
+  $("mechanicalFields").classList.toggle("area-hidden", !mechanical);
+  $("electricalFields").classList.toggle("area-hidden", !electrical);
+}
+$("iTipo").addEventListener("change", updateInspectionAreas);
+updateInspectionAreas();
 
 function inspStatus(){
   const type = $("iTipo").value;
   const ids = type === "Mecânica"
     ? ["vib","ruido","lub","rol","cor"]
     : type === "Elétrica"
-      ? ["isol","aterr","painel"]
-      : ["vib","ruido","lub","rol","cor","isol","aterr","painel"];
-  const values = ids.map(id => $(id).value);
-  return values.includes("Crítico") ? "Crítico" : values.includes("Atenção") ? "Atenção" : "Normal";
+      ? ["vibE","ruidoE","isol","aterr","painel"]
+      : ["vib","ruido","lub","rol","cor","vibE","ruidoE","isol","aterr","painel"];
+  const a = ids.map(id=>$(id).value);
+  return a.includes("Crítico")?"Crítico":a.includes("Atenção")?"Atenção":"Normal";
 }
 $("inspectionSaveBtn").onclick=()=>{
   const e=equips.find(x=>String(x.id)===$("iEquip").value);if(!e){alert("Cadastre e selecione um equipamento.");return}
-  const c=calc(),x={id:Date.now(),equipId:e.id,tag:e.tag,nome:e.nome,tipo:$("iTipo").value,tecnico:val("iTec"),data:new Date().toLocaleString("pt-BR"),status:inspStatus(),obs:val("obs"),photo:photoData,vib:$("vib").value,ruido:$("ruido").value,tempM:val("tempM"),lub:$("lub").value,rol:$("rol").value,cor:$("cor").value,t12:val("t12"),t23:val("t23"),t31:val("t31"),c1:val("c1"),c2:val("c2"),c3:val("c3"),tempE:val("tempE"),isol:$("isol").value,aterr:$("aterr").value,painel:$("painel").value,corrMedia:Number.isFinite(c.media)?c.media.toFixed(2):"",corrMax:Number.isFinite(c.max)?c.max.toFixed(2):"",corrLimiteFS:Number.isFinite(c.lim)?c.lim.toFixed(2):"",corrPctNom:Number.isFinite(c.pn)?c.pn.toFixed(2):"",corrPctFS:Number.isFinite(c.pf)?c.pf.toFixed(2):"",deseqCorr:Number.isFinite(c.imb)?c.imb.toFixed(2):""};
+  const c=calc(),x={id:Date.now(),equipId:e.id,tag:e.tag,nome:e.nome,tipo:$("iTipo").value,tecnico:val("iTec"),data:new Date().toLocaleString("pt-BR"),status:inspStatus(),obs:val("obs"),photo:photoData,vib:$("vib").value,ruido:$("ruido").value,vibE:$("vibE").value,ruidoE:$("ruidoE").value,tempM:val("tempM"),lub:$("lub").value,rol:$("rol").value,cor:$("cor").value,t12:val("t12"),t23:val("t23"),t31:val("t31"),c1:val("c1"),c2:val("c2"),c3:val("c3"),tempE:val("tempE"),isol:$("isol").value,aterr:$("aterr").value,painel:$("painel").value,corrMedia:Number.isFinite(c.media)?c.media.toFixed(2):"",corrMax:Number.isFinite(c.max)?c.max.toFixed(2):"",corrLimiteFS:Number.isFinite(c.lim)?c.lim.toFixed(2):"",corrPctNom:Number.isFinite(c.pn)?c.pn.toFixed(2):"",corrPctFS:Number.isFinite(c.pf)?c.pf.toFixed(2):"",deseqCorr:Number.isFinite(c.imb)?c.imb.toFixed(2):""};
   hist.push(x);persist();clearInspection();toast("Inspeção salva com sucesso!")
 };
 function clearInspection(){["iTec","tempM","t12","t23","t31","c1","c2","c3","tempE","obs"].forEach(id=>$(id).value="");$("foto").value="";photoData="";$("photoPreview").innerHTML="";calc()}
@@ -311,13 +345,10 @@ function render(){
   $("preventiveHistory").innerHTML=prev.length?[...prev].reverse().map(x=>`<div class="item"><b>🧰 ${esc(x.tag)} — ${esc(x.nome)}</b> ${badge(x.status)}<br><small>📅 ${esc(x.data)} • ${esc(x.freq)} • 👷 ${esc(x.resp||"-")} • ⏱ ${esc(x.hora||"-")}</small>${x.serv?`<br><small><b>Atividades:</b> ${esc(x.serv)}</small>`:""}${x.materiais?`<br><small><b>Materiais:</b> ${esc(x.materiais)}</small>`:""}${x.obs?`<br><small><b>Obs.:</b> ${esc(x.obs)}</small>`:""}</div>`).join(""):"<div class='item'>Nenhuma preventiva registrada.</div>";
   renderAreaRecords();calc();
 }
-function openArea(area){currentArea=area;$("areaTitle").textContent="🔧 "+area;$("areaDesc").textContent="Escolha entre inspeção e manutenção preventiva de "+area+".";$("areaInspectionText").textContent="Abrir inspeção de "+area;$("areaPreventiveText").textContent="Programar preventiva de "+area;$("areaInspBtn").onclick=()=>{show("nova");if(area!=="Geral")$("iTipo").value=area;updateInspectionFields()};$("areaPrevBtn").onclick=()=>show("preventiva");show("area")}
+function openArea(area){currentArea=area;$("areaTitle").textContent="🔧 "+area;$("areaDesc").textContent="Escolha entre inspeção e manutenção preventiva de "+area+".";$("areaInspectionText").textContent="Abrir inspeção de "+area;$("areaPreventiveText").textContent="Programar preventiva de "+area;$("areaInspBtn").onclick=()=>{show("nova");if(area!=="Geral")$("iTipo").value=area;updateInspectionAreas()};$("areaPrevBtn").onclick=()=>show("preventiva");show("area")}
 function renderAreaRecords(){const a=currentArea,arr=[...hist.filter(x=>x.tipo===a),...manuts.filter(x=>x.area===a),...prev.filter(x=>(x.area||"Geral")===a)].slice(-9).reverse();$("areaRecords").innerHTML=arr.length?arr.map(x=>`<div class="item"><b>${esc(x.tag)} — ${esc(x.nome)}</b><br><small>${esc(x.data||"")} • ${esc(x.tipo||x.area||"")}</small></div>`).join(""):"<small style='color:#91a9bf'>Nenhum registro nesta área.</small>"}
 
 $("mData").value=new Date().toISOString().slice(0,10);clearPreventive();updateInspectionFields();render();
-if ("serviceWorker" in navigator && location.protocol !== "file:") {
-  window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js").catch(console.warn));
-}
 </script>
 </body>
 </html>
