@@ -1,0 +1,10 @@
+INSPEÇÃO+ PWA — COMO PUBLICAR
+
+1. Extraia este ZIP.
+2. No GitHub, abra o repositório Inspe-o-Manutecao.
+3. Use Add file > Upload files e envie os 5 arquivos da pasta (index.html, manifest.json, service-worker.js, icon-192.png e icon-512.png).
+4. Faça Commit changes. Se o GitHub perguntar para substituir index.html, confirme.
+5. Aguarde alguns minutos e abra no Chrome Android: https://nunesdesouzavaldinei1-oss.github.io/Inspe-o-Manutecao/
+6. No Chrome, menu ⋮ > Instalar app (ou Adicionar à tela inicial).
+
+ATENÇÃO: mantenha uma cópia de segurança dos registros. Esta versão mantém dados no navegador do aparelho; não sincroniza automaticamente entre celulares.
